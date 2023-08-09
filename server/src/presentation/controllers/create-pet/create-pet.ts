@@ -1,7 +1,4 @@
-import { CreatePet } from "../../../domain/useCases/create-pet";
-import { PetValidator } from "../../../validation/protocols";
-import { badRequest, created, serverError } from "../../helpers/http-helper";
-import { Controller, HttpRequest, HttpResponse } from "../../protocols";
+import { Controller, CreatePet, HttpRequest, HttpResponse, PetValidator, badRequest, created, serverError } from "./create-pet-protocols";
 
 export class CreatePetController implements Controller {
   constructor(
@@ -19,8 +16,8 @@ export class CreatePetController implements Controller {
         return badRequest(validation.error);
       }
 
-      const petCreated = await this.createPet.handle(pet);
-      return created(petCreated);
+      const { id } = await this.createPet.handle(pet);
+      return created(id);
     } catch (error) {
       return serverError(error);
     }
