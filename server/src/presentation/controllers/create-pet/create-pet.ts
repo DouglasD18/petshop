@@ -19,7 +19,7 @@ export class CreatePetController implements Controller {
       const { id } = await this.createPet.handle(pet);
       return created(id);
     } catch (error) {
-      return serverError(error);
+      return serverError();
     }
   }
 

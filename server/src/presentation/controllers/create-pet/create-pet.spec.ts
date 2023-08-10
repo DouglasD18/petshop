@@ -1,5 +1,4 @@
 import { Kind, Owner, Pet, PetCreated } from "../../../domain/models";
-import { ServerError } from "../../errors";
 import { CreatePetController } from './create-pet';
 import { CreatePet, PetValidator, Validated, serverError } from "./create-pet-protocols";
 import { MissingParamError } from '../../errors/missing-param-error';
@@ -26,7 +25,7 @@ const PET_CREATED: PetCreated = {
 
 const VALIDATED: Validated = {
   isValid: true,
-  error: undefined
+  error: new Error()
 }
 
 interface SutTypes {
@@ -88,14 +87,14 @@ describe('CreatePet Controller', () => {
 
     const validated: Validated = {
       isValid: false,
-      error: new MissingParamError("name")
+      error: new MissingParamError("name", "Owner name is required")
     }
 
     jest.spyOn(petValidatorStub, "handle").mockReturnValue(validated);
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('name'));
+    expect(httpResponse.body).toEqual(new MissingParamError('name', "Owner name is required"));
   });
 
   it('Should return 400 if any param is invalid', async () => {
@@ -139,7 +138,7 @@ describe('CreatePet Controller', () => {
     })
     const httpResponse = await sut.handle(httpRequest);
 
-    expect(httpResponse).toEqual(serverError(new Error()));
+    expect(httpResponse).toEqual(serverError());
   });
 
   it('Should return 201 if valid values is provided.', async () => {
