@@ -1,15 +1,25 @@
-import { InvalidParamError, MissingParamError, Owner, OwnerValidator, Validated, validateOwnerSchema } from "./owner-validator-protocols";
+import { Pet } from "../../domain/models";
+import { InvalidParamError, MissingParamError } from "../../presentation/errors";
+import { OwnerValidator, PetValidator, Validated } from "../protocols";
+import { validatePetSchema } from '../schemas/pet-schema';
 
-export class OwnerValidatorAdapter implements OwnerValidator {
+export class PetValidatorAdapter implements PetValidator {
+  constructor(private ownerValidator: OwnerValidator) {}
 
-  handle(data: Owner): Validated {
-    const result = validateOwnerSchema(data);
+  handle(data: Pet): Validated {
+    const { owner } = data;
 
+    const ownerResult = this.ownerValidator.handle(owner);
+    if (!ownerResult.isValid) {
+      return ownerResult;
+    }
+
+    const result = validatePetSchema(data);
     if (!result.success) {
       const { error: { errors } } = result;
       const firtError = errors[0];
       const secondError = errors[1];
-      
+
       if (firtError.message.includes("is required")) {
         const { message, path } = firtError;
         const param = path[0] as string;
@@ -37,9 +47,8 @@ export class OwnerValidatorAdapter implements OwnerValidator {
     }
 
     return {
-      isValid: result.success,
+      isValid: true,
       error: new Error()
     }
   }
-
 }

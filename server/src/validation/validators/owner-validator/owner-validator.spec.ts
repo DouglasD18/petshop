@@ -1,4 +1,4 @@
-import { OwnerValidatorAdapter } from "./owner-validator"
+import { OwnerValidatorAdapter } from "./owner-validator";
 import { InvalidParamError, MissingParamError } from "./owner-validator-protocols";
 
 const sut = new OwnerValidatorAdapter();
