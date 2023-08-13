@@ -1,0 +1,25 @@
+version: "3"
+services:
+  mongo:
+    container_name: mongo-server
+    image: mongo:3
+    restart: always
+    ports:
+      - "27017:27017"
+
+  api:
+    container_name: api-container
+    build: ./server
+    image: api-server
+    ports:
+      - "3001:3001"
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/users
+
+networks:
+  default:
+    name: pet_shop_net
