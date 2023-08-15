@@ -2,9 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "description": "API para CRUD de animais no petshop.",
-  "main": "index.js",
+  "main": "dist/main/server.js",
   "scripts": {
-    "start": "npm run build  && node dist/main/server.js",
+    "start": "npm run build  && node dist/src/main/server.js",
     "build": "rimraf dist && tsc",
     "dev": "tsnd src/main/server.ts",
     "test": "jest --watch"
