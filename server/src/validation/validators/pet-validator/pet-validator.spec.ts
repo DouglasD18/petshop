@@ -1,5 +1,5 @@
 import { OwnerValidator, Validated } from "../../protocols";
-import { PetValidatorAdapter } from "../pet-validator";
+import { PetValidatorAdapter } from "./pet-validator";
 import { Kind, Owner, Pet } from "../../../domain/models";
 import { InvalidParamError, MissingParamError } from "../../../presentation/errors";
 

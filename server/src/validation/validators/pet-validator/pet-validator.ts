@@ -1,7 +1,7 @@
-import { Pet } from "../../domain/models";
-import { InvalidParamError, MissingParamError } from "../../presentation/errors";
-import { OwnerValidator, PetValidator, Validated } from "../protocols";
-import { validatePetSchema } from '../schemas/pet-schema';
+import { Pet } from "../../../domain/models";
+import { InvalidParamError, MissingParamError } from "../../../presentation/errors";
+import { OwnerValidator, PetValidator, Validated } from "../../protocols";
+import { validatePetSchema } from '../../schemas/pet-schema';
 
 export class PetValidatorAdapter implements PetValidator {
   constructor(private ownerValidator: OwnerValidator) {}
