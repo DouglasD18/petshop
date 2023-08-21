@@ -16,9 +16,7 @@ const PET: Pet = {
 }
 
 const HTTP_RESQUEST: HttpRequest = {
-  body: {
-    name: PET.name
-  }
+  params: "Chani"
 }
 
 interface SutTypes {
@@ -49,30 +47,12 @@ const makeSut = (): SutTypes => {
 describe("FindOnePet Controller", () => {
   it("Should return 400 if no name is provided", async () => {
       const { sut } = makeSut();
-    const httpResquest = {
-      body: {
-        id: "adhuhiwenno"
-      }
-    }
+    const httpResquest: HttpRequest = {}
 
     const httpResponse = await sut.handle(httpResquest);
 
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new MissingParamError("name", "Name is required!"));
-  });
-
-  it("Should return 400 if name is not a string", async () => {
-    const { sut } = makeSut();
-    const httpResquest = {
-      body: {
-        name: 53
-      }
-    }
-
-    const httpResponse = await sut.handle(httpResquest);
-
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new InvalidParamError("name", "Name must be a string"));
   });
 
   it("Should call FindOne with name", async () => {
@@ -81,9 +61,9 @@ describe("FindOnePet Controller", () => {
     const findOnePetSpy = jest.spyOn(findOnePetStub, "handle");
     await sut.handle(HTTP_RESQUEST);
 
-    const { body } = HTTP_RESQUEST;
+    const { params } = HTTP_RESQUEST;
 
-    expect(findOnePetSpy).toHaveBeenCalledWith(body.name);
+    expect(findOnePetSpy).toHaveBeenCalledWith(params);
   });
 
   it("Should return 404 if FindOne returns void", async () => {

@@ -5,7 +5,7 @@ export class FindOnePetController implements Controller {
   constructor(private findOnePet: FindOnePet) {}
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { name } = httpRequest.body;
+    const name = httpRequest.params;
 
     if (!name) {
       return badRequest(new MissingParamError("name", "Name is required!"));
