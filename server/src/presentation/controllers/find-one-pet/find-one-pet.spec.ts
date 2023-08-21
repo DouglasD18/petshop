@@ -114,4 +114,4 @@ describe("FindOnePet Controller", () => {
     expect(httpResponse.statusCode).toBe(200);
     expect(httpResponse.body).toEqual(PET);
   });
-})
+});
