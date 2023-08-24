@@ -4,7 +4,7 @@ import { InvalidParamError, MissingParamError } from "./owner-validator-protocol
 const sut = new OwnerValidatorAdapter();
 
 const NAME_LENGTH_ERROR = "Owner name must have length between 3 and 100";
-const ADDRESS_LENGTH_ERROR = "Owner length must have length between 12 and 250"
+const ADDRESS_LENGTH_ERROR = "Owner address must have length between 12 and 250"
 
 describe("OwnerValidator Adapter", () => {
   it("Should return a MissingParamError if name is no provided", () => {
@@ -39,7 +39,7 @@ describe("OwnerValidator Adapter", () => {
     const validated = sut.handle({ contact: "(11)9999-9999", address: "any_address_", name: "owner" });
 
     expect(validated.isValid).toBe(false);
-    expect(validated.error).toEqual(new InvalidParamError("contact", "Owner contact must the correct format"));
+    expect(validated.error).toEqual(new InvalidParamError("contact", "Owner contact must have the format (XX)XXXXX-XXXX"));
   });
 
   it("Should return a InvalidParamError if address is invalid", () => {

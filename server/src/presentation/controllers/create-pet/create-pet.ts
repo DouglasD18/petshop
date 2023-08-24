@@ -13,7 +13,7 @@ export class CreatePetController implements Controller {
       const validation = this.petValidator.handle(pet);
 
       if (!validation.isValid) {
-        return badRequest(validation.error);
+        return badRequest(validation.error!);
       }
 
       const { id } = await this.createPet.handle(pet);

@@ -1,7 +1,5 @@
-import { OwnerValidator, Validated } from "../../protocols";
 import { PetValidatorAdapter } from "./pet-validator";
-import { Kind, Owner, Pet } from "../../../domain/models";
-import { InvalidParamError, MissingParamError } from "../../../presentation/errors";
+import { Owner, Pet, Kind, Validated, OwnerValidator, InvalidParamError, MissingParamError } from "./pet-validator-protocols";
 
 const missingParamMessage = (param: string): string =>
   (`Pet ${param} is required`);
@@ -57,7 +55,39 @@ const makeSut = (): SutTypes => {
 }
 
 describe("PetValidator Adapter", () => {
-  it("Should retrun InvalidParamError if breed is is decimal", () => {
+  it("Should return a MissingParamError if name is no provided", () => {
+    const { sut } = makeSut();
+    const pet: Pet = {
+      name: "  ",
+      age: PET.age,
+      kind: PET.kind,
+      breed: PET.breed,
+      owner: PET.owner
+    }
+
+    const result = sut.handle(pet);
+
+    expect(result.isValid).toBe(false);
+    expect(result.error).toEqual(new MissingParamError("name", missingParamMessage("name")));
+  })
+
+  it("Should return a MissingParamError if bredd is no provided", () => {
+    const { sut } = makeSut();
+    const pet: Pet = {
+      name: PET.name,
+      age: PET.age,
+      kind: PET.kind,
+      breed: "  ",
+      owner: PET.owner
+    }
+
+    const result = sut.handle(pet);
+
+    expect(result.isValid).toBe(false);
+    expect(result.error).toEqual(new MissingParamError("breed", missingParamMessage("breed")));
+  })
+
+  it("Should return InvalidParamError if breed is a decimal number", () => {
     const { sut } = makeSut();
     const pet: Pet = {
       name: PET.name,
@@ -70,10 +100,10 @@ describe("PetValidator Adapter", () => {
     const result = sut.handle(pet);
 
     expect(result.isValid).toBe(false);
-    expect(result.error).toEqual(new InvalidParamError("age", invalidParamMessage("age", "integer")));
+    expect(result.error).toEqual(new InvalidParamError("age", invalidParamMessage("age", "integer number")));
   })
 
-  it("Should retrun InvalidParamError if breed is negative", () => {
+  it("Should return InvalidParamError if breed is negative", () => {
     const { sut } = makeSut();
     const pet: Pet = {
       name: PET.name,
@@ -86,10 +116,10 @@ describe("PetValidator Adapter", () => {
     const result = sut.handle(pet);
 
     expect(result.isValid).toBe(false);
-    expect(result.error).toEqual(new InvalidParamError("age", invalidParamMessage("age", "number positive")));
+    expect(result.error).toEqual(new InvalidParamError("age", invalidParamMessage("age", "positive number")));
   })
 
-  it("Should retrun InvalidParamError if breed is too large", () => {
+  it("Should return InvalidParamError if breed is too large", () => {
     const { sut } = makeSut();
     const pet: Pet = {
       name: PET.name,
@@ -105,7 +135,7 @@ describe("PetValidator Adapter", () => {
     expect(result.error).toEqual(new InvalidParamError("breed", lengthError("breed")));
   })
 
-  it("Should retrun InvalidParamError if name is too small", () => {
+  it("Should return InvalidParamError if name is too small", () => {
     const { sut } = makeSut();
     const pet: Pet = {
       name: "ow",
