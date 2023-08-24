@@ -7,7 +7,9 @@
     "start": "npm run build  && node dist/src/main/server.js",
     "build": "rimraf dist && tsc",
     "dev": "tsnd src/main/server.ts",
-    "test": "jest --watch"
+    "test": "jest --watch --runInBand",
+    "test:unit": "npm test -- --silent -c jest-unit-config.js",
+    "test:integration": "npm test -- --silent -c jest-integration-config.js"
   },
   "keywords": [],
   "author": "Douglas Aguiar",
