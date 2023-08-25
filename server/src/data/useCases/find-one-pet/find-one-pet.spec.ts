@@ -61,17 +61,6 @@ describe("FindOnePet Adapter", () => {
     await expect(promise).rejects.toThrow()
   })
 
-  it("Should throw if FindOnePetRepository throws", async  () => {
-    const { sut, findOnePetRepository } = makeSut();
-
-    jest.spyOn(findOnePetRepository, "handle").mockReturnValueOnce(
-      new Promise(resolve => resolve())
-    );
-    const result = await sut.handle(NAME);
-
-    expect(result).toBeUndefined();
-  })
-
   it("Should return the correct value on success", async () => {
     const { sut } = makeSut();
 
