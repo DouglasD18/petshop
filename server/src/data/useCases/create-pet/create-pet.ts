@@ -5,7 +5,9 @@ export class CreatePetAdapter implements CreatePet  {
   constructor(private createPetRepository: CreatePetRepository) {}
 
   async handle(data: Pet): Promise<PetCreated> {
-    const petCreated = await this.createPetRepository.handle(data);
+    const { name, age, breed, owner, kind } = data;
+    
+    const petCreated = await this.createPetRepository.handle({ name, age, breed, kind, owner });
 
     return petCreated;
   }

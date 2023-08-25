@@ -5,20 +5,18 @@ const CONTACT_REGEX = /^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)(?:((?:9\
 export class OwnerValidatorAdapter implements OwnerValidator {
 
   handle(data: Owner): Validated {
-    const name = data.name.trim();
-    const contact = data.contact.trim();
-    const address = data.address.trim();
-    if (name.length === 0) {
+    const { name, contact, address } = data;
+    if (!name || name.trim().length === 0) {
       return {
         isValid: false,
         error: new MissingParamError("name", "Owner name is required")
       }
-    } if (contact.length === 0) {
+    } if (!contact || contact.trim().length === 0) {
       return {
         isValid: false,
         error: new MissingParamError("contact", "Owner contact is required")
       }
-    } if (address.length === 0) {
+    } if (!address || address.trim().length === 0) {
       return {
         isValid: false,
         error: new MissingParamError("address", "Owner address is required")

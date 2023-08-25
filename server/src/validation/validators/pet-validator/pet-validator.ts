@@ -4,22 +4,19 @@ export class PetValidatorAdapter implements PetValidator {
   constructor(private ownerValidator: OwnerValidator) {}
 
   handle(data: Pet): Validated {
-    const name = data.name.trim();
-    const breed = data.breed.trim();
-    const kind = data.kind.trim();
-    const { owner, age } = data;
+    const { owner, age, name, breed, kind } = data;
 
-    if (name.length === 0) {
+    if (!name || name.trim().length === 0) {
       return {
         isValid: false,
         error: new MissingParamError("name", "Pet name is required")
       }
-    } if (breed.length === 0) {
+    } if (!breed || breed.trim().length === 0) {
       return {
         isValid: false,
         error: new MissingParamError("breed", "Pet breed is required")
       }
-    } if (kind.length === 0) {
+    } if (!kind || kind.trim().length === 0) {
       return {
         isValid: false,
         error: new MissingParamError("kind", "Pet kind is required")

@@ -1,6 +1,5 @@
 import request from 'supertest';
 import app from '../../config/app';
-import assert from 'assert';
 
 import { Kind, Pet } from '../../../domain/models';
 import { MongoHelper } from '../../../infra/db/mongodb/helpers/mongo-helper';
@@ -11,7 +10,7 @@ const kind = "cat";
 const breed = "any_cat_breed";
 const ownerName = "any_owner_name";
 const contact = "(88)99999-9999";
-const address = "any_address";
+const address = "any_address_good_address";
 const owner = {
   name: ownerName,
   contact,
@@ -43,93 +42,75 @@ describe("CreatePet Route", () => {
   })
   
   it("Should return 400 if name is missing", async () => {
-    await request(app)
+    const response = await request(app)
       .post('/api/pet/')
-      .send({ age, kind, breed, owner })
-      .expect(400)
-      .then(response => 
-        assert(response.body.name, "MissingParamError")
-      )
+      .send({ age, kind, breed, owner });
+
+    expect(response.statusCode).toBe(400);
   })
 
   it("Should return 400 if age is missing", async () => {
-    await request(app)
+    const response = await request(app)
       .post('/api/pet/')
-      .send({ name, kind, breed, owner })
-      .expect(400)
-      .then(response => 
-        assert(response.body.name, "MissingParamError")
-      )
+      .send({ name, kind, breed, owner });
+
+    expect(response.statusCode).toBe(400);
   })
 
   it("Should return 400 if kind is missing", async () => {
-    await request(app)
+    const response = await request(app)
       .post('/api/pet/')
-      .send({ age, name, breed, owner })
-      .expect(400)
-      .then(response => 
-        assert(response.body.name, "MissingParamError")
-      )
+      .send({ age, name, breed, owner });
+
+    expect(response.statusCode).toBe(400);
   })
 
   it("Should return 400 if breed is missing", async () => {
-    await request(app)
+    const response = await request(app)
       .post('/api/pet/')
-      .send({ age, kind, name, owner })
-      .expect(400)
-      .then(response => 
-        assert(response.body.name, "MissingParamError")
-      )
+      .send({ age, kind, name, owner });
+
+    expect(response.statusCode).toBe(400);
   })
 
   it("Should return 400 if owner is missing", async () => {
-    await request(app)
+    const response = await request(app)
       .post('/api/pet/')
-      .send({ age, kind, breed, name })
-      .expect(400)
-      .then(response => 
-        assert(response.body.name, "MissingParamError")
-      )
+      .send({ age, kind, breed, name });
+      
+    expect(response.statusCode).toBe(400);
   })
 
   it("Should return 400 if owner's name is missing", async () => {
-    await request(app)
+    const response = await request(app)
       .post('/api/pet/')
-      .send({ age, kind, breed, name, owner: { contact, address } })
-      .expect(400)
-      .then(response => 
-        assert(response.body.name, "MissingParamError")
-      )
+      .send({ age, kind, breed, name, owner: { contact, address } });
+      
+    expect(response.statusCode).toBe(400);
   })
 
   it("Should return 400 if owner's contact is missing", async () => {
-    await request(app)
+    const response = await request(app)
       .post('/api/pet/')
-      .send({ age, kind, breed, name, owner: { name: ownerName, address } })
-      .expect(400)
-      .then(response => 
-        assert(response.body.name, "MissingParamError")
-      )
+      .send({ age, kind, breed, name, owner: { name: ownerName, address } });
+      
+    expect(response.statusCode).toBe(400);
   })
 
   it("Should return 400 if owner's address is missing", async () => {
-    await request(app)
+    const response = await request(app)
       .post('/api/pet/')
-      .send({ age, kind, breed, name, owner: { contact, name: ownerName } })
-      .expect(400)
-      .then(response => 
-        assert(response.body.name, "MissingParamError")
-      )
+      .send({ age, kind, breed, name, owner: { contact, name: ownerName } });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({ name: "MissingParamError" });
   })
 
-  /* it("Should return the pet id on success", async () => {
-    await request(app)
+  it("Should return the pet id on success", async () => {
+    const response = await request(app)
       .post('/api/pet/')
-      .send(PET)
-      .expect(201)
-      .then(response => {
-        console.log(response.body)
-        assert(typeof response.body.id, "string")
-      })
-  }) */
+      .send(PET);
+      
+    expect(response.statusCode).toBe(201);
+  }) 
 })
