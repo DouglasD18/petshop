@@ -1,6 +1,6 @@
 export interface HttpRequest {
   body?: any,
-  params?: string
+  params?: any
 }
 
 export interface HttpResponse {
