@@ -31,14 +31,14 @@ describe("CreatePet Route", () => {
   })
 
   afterAll(async () => {
-    const accountCollection = await MongoHelper.getCollection("pets");
-    await accountCollection.deleteMany({});
+    const petsCollection = await MongoHelper.getCollection("pets");
+    await petsCollection.deleteMany({});
     await MongoHelper.disconnect();
   })
 
   beforeEach(async () => {
-    const accountCollection = await MongoHelper.getCollection("pets");
-    await accountCollection.deleteMany({});
+    const petsCollection = await MongoHelper.getCollection("pets");
+    await petsCollection.deleteMany({});
   })
   
   it("Should return 400 if name is missing", async () => {
