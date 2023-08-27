@@ -1,6 +1,7 @@
 import { Pet, Kind } from "../../../domain/models"
 import { UpdatePetController } from "./update-pet"
 import { HttpRequest, Validated, UpdatePet, PetValidator, MissingParamError, InvalidParamError, NotFoundError, ServerError } from "./update-pet-protocols"
+import { UpdatePayload } from '../../../domain/models';
 
 const PET: Pet = {
   name: "Chani",
@@ -40,7 +41,7 @@ interface SutTypes {
 
 const makeUpdatePetStub = (): UpdatePet => {
   class UpdatePetStub implements UpdatePet {
-    handle(name: string, pet: Pet): Promise<void> {
+    handle(data: UpdatePayload): Promise<void> {
       return new Promise(resolve => resolve());
     }
   }
@@ -147,8 +148,9 @@ describe("UpdatePet Controller", () => {
 
     const { name } = HTTP_RESQUEST.params;
     const { pet } = HTTP_RESQUEST.body;
+    const updatePayload = { name, pet }
 
-    expect(updatePetSpy).toHaveBeenCalledWith(name, pet);
+    expect(updatePetSpy).toHaveBeenCalledWith(updatePayload);
   });
 
   it("Should return 404 if Update returns NotFoundError", async () => {

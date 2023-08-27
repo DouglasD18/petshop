@@ -1,5 +1,5 @@
-import { Pet } from "../models";
+import { UpdatePayload } from "../models";
 
 export interface UpdatePet {
-  handle(name: string, pet: Pet): Promise<void>
+  handle(data: UpdatePayload): Promise<void>
 }

@@ -23,7 +23,8 @@ export class UpdatePetController implements Controller {
     }
     
     try {
-      await this.updatePet.handle(name, pet);
+      const updatePayload = { name, pet };
+      await this.updatePet.handle(updatePayload);
 
       return noContent();
     } catch (e) {
