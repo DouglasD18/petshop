@@ -16,6 +16,11 @@ export const notFound = (entity: any): HttpResponse => ({
   body: new NotFoundError(entity)
 });
 
+export const noContent = (): HttpResponse => ({
+  statusCode: 204,
+  body: []
+});
+
 export const created = (result: any): HttpResponse => ({
   statusCode: 201,
   body: result
