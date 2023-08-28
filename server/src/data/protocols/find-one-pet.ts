@@ -1,5 +1,5 @@
-import { Pet } from "../../domain/models";
+import { PetCreated } from "../../domain/models";
 
 export interface FindOnePetRepository {
-  handle(name: string): Promise<Pet | void>;
+  handle(name: string): Promise<PetCreated | void>;
 }

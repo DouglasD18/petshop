@@ -15,6 +15,11 @@ const PET: Pet = {
   }
 }
 
+const PET_CREATED: PetCreated = {
+  ...PET,
+  id: "any_id"
+}
+
 interface SutTypes {
   sut: FindOnePetAdapter
   findOnePetRepository: FindOnePetRepository
@@ -22,8 +27,8 @@ interface SutTypes {
 
 const makeFindOnePetRepository = (): FindOnePetRepository => {
   class FindOnePetRepositoryStub implements FindOnePetRepository {
-    handle(name: string): Promise<Pet> {
-      return new Promise(resolve => resolve(PET));
+    handle(name: string): Promise<PetCreated> {
+      return new Promise(resolve => resolve(PET_CREATED));
     }
   }
 
@@ -66,6 +71,6 @@ describe("FindOnePet Adapter", () => {
 
     const result = await sut.handle(NAME);
 
-    expect(result).toEqual(PET);
+    expect(result).toEqual(PET_CREATED);
   })
 });
