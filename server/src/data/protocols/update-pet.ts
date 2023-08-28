@@ -1,5 +1,5 @@
-import { UpdatePayload } from "../../domain/models";
+import { PetCreated } from "../../domain/models";
 
 export interface UpdatePetRepository {
-  handle(data: UpdatePayload): Promise<boolean>;
+  handle(data: PetCreated): Promise<boolean>;
 }

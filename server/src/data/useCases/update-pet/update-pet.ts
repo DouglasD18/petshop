@@ -1,14 +1,20 @@
-import { UpdatePet, UpdatePetRepository, UpdatePayload, NotFoundError } from "./update-pet-protocols";
+import { UpdatePet, UpdatePetRepository, UpdatePayload, NotFoundError, FindOnePetRepository } from "./update-pet-protocols";
 
 export class UpdatePetAdapter implements UpdatePet {
-  constructor(private updatePetRepository: UpdatePetRepository) {}
+  constructor(
+    private updatePetRepository: UpdatePetRepository,
+    private findOnePetRepository: FindOnePetRepository
+  ) {}
 
   async handle(data: UpdatePayload): Promise<void> {
-    const result = await this.updatePetRepository.handle(data);
+    const pet = await this.findOnePetRepository.handle(data.name);
 
-    if (!result) {
+    if (!pet) {
       throw new NotFoundError("Pet");
     }
+
+    const id = pet.id;
+    await this.updatePetRepository.handle({ id, ...data.pet })
   }
   
 }
