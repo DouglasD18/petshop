@@ -43,8 +43,8 @@ const makeFindOnePetRepository = (): FindOnePetRepository => {
 
 const makeUpdatePetRepositoryStub = (): UpdatePetRepository => {
   class UpdatePetRepositoryStub implements UpdatePetRepository {
-    handle(data: PetCreated): Promise<boolean> {
-      return new Promise(resolve => resolve(true));
+    handle(data: PetCreated): Promise<void> {
+      return new Promise(resolve => resolve());
     }
     
   }

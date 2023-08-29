@@ -8,7 +8,7 @@ export class UpdatePetAdapter implements UpdatePet {
 
   async handle(data: UpdatePayload): Promise<void> {
     const pet = await this.findOnePetRepository.handle(data.name);
-
+    
     if (!pet) {
       throw new NotFoundError("Pet");
     }

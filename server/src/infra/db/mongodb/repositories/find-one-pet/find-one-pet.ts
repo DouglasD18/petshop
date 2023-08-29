@@ -5,7 +5,9 @@ export class FindOnePetMongoRepository implements FindOnePetRepository {
     const petsCollection = await MongoHelper.getCollection("pets");
     const pet = await petsCollection.findOne({ name });
     
-    if (typeof pet !== "undefined") {
+    if (pet !== null) {
+      const id = pet._id.toString();
+      pet.id = id;
       return pet as unknown as PetCreated;
     }
 

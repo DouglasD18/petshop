@@ -1,7 +1,7 @@
 import { UpdatePetMongoRepository } from "./update-pet";
 import { Kind, MongoHelper } from "./update-pet-protocols";
 
-const pet = {
+const PET = {
   name: "any_dog_name",
   age: 3,
   kind: Kind.DOG,
@@ -21,30 +21,37 @@ describe("UpdatePetMongoRepository", () => {
   })
 
   afterAll(async () => {
-    const accountCollection = await MongoHelper.getCollection("pets");
-    await accountCollection.deleteMany({});
     await MongoHelper.disconnect();
   })
 
   beforeEach(async () => {
-    const accountCollection = await MongoHelper.getCollection("pets")
+    const accountCollection = await MongoHelper.getCollection("pets");
+    await accountCollection.insertOne(PET);
+  })
+
+  afterEach(async () => {
+    const accountCollection = await MongoHelper.getCollection("pets");
     await accountCollection.deleteMany({})
   })
 
-  it("Should return true on success", async () => {
+  it("Should update the Pet", async () => {
     const accountCollection = await MongoHelper.getCollection("pets");
-    const { insertedId } = (await accountCollection.insertOne(pet));
-    const response = await sut.handle({ id: insertedId.toString(), ...pet });
+    const pet = await accountCollection.findOne({ name: PET.name });
+    
+    const id = pet !== null ? pet._id : "";
+    
+    await sut.handle({ id: id.toString(), ...PET, name: "Killua" });
 
-    expect(response).toBe(true);
+    const updated = await accountCollection.findOne({ name: "Killua" });
+    expect(updated).toBeTruthy();
   })
 
   it("Should return false if pet is not found", async () => {
+    await sut.handle({ id: "123456789012345678901234", ...PET, name: "Chani" });
+
     const accountCollection = await MongoHelper.getCollection("pets");
-    await accountCollection.insertOne(pet);
+    const pet = await accountCollection.findOne({ name: "Chani" });
 
-    const response = await sut.handle({ id: "123456789012345678901234", ...pet });
-
-    expect(response).toBe(false);
+    expect(pet).toBeFalsy();
   })
 });
