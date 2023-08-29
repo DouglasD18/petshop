@@ -4,6 +4,7 @@ import createRouter from "../routes/create-pet/create-pet";
 import findOnePetRouter from "../routes/find-one-pet/find-one-pet";
 import findAllPetsRouter from "../routes/find-all-pets/find-all-pets";
 import updatePetRouter from "../routes/update-pet/update-pet";
+import deletePetRouter from "../routes/delete-pet/delete-pet";
 
 export default (app: Express): void => {
   const router = Router();
@@ -12,4 +13,5 @@ export default (app: Express): void => {
   findOnePetRouter(router);
   findAllPetsRouter(router);
   updatePetRouter(router);
+  deletePetRouter(router);
 }

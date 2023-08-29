@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { expressAdapter } from "../../adapter/express-adapter";
-import { makeFindAllPetsController } from "../../factories";
+import { makeDeletePetController } from "../../factories";
 
 export default (router: Router): void => {
-  router.get("/", expressAdapter(makeFindAllPetsController()));
+  router.delete("/:name", expressAdapter(makeDeletePetController()));
 }
