@@ -68,6 +68,12 @@ describe("FindAllPets Route", () => {
       .get('/api/pet')
       
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual([PET]);
+    expect(response.body).toEqual([{
+      name,
+      age,
+      kind: Kind.CAT,
+      breed,
+      owner
+    }]);
   })
 })

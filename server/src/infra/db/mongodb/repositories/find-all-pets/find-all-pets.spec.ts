@@ -49,8 +49,17 @@ describe("FindAllPetsMongoRepository", () => {
     await accountCollection.insertOne(PET);
     
     const pets = await sut.handle();
-    console.log(pets);
 
-    expect(pets).toEqual([PET]);
+    expect(pets).toEqual([{
+      name: "any_dog_name",
+      age: 3,
+      kind: "dog",
+      breed: "any_dog_breed",
+      owner: {
+        name: "any_owner_name",
+        contact: "(99)99999-9999",
+        address: "any_owner_address"
+      }
+    }]);
   })
 })
